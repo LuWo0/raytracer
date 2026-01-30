@@ -783,11 +783,17 @@ CMakeFiles/main.dir/src/main.cpp.o: /Users/luiswoo/Desktop/raytracer/src/main.cp
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
   /Users/luiswoo/Desktop/raytracer/include/color.hpp \
+  /Users/luiswoo/Desktop/raytracer/include/hittable.hpp \
+  /Users/luiswoo/Desktop/raytracer/include/hittable_list.hpp \
   /Users/luiswoo/Desktop/raytracer/include/ray.hpp \
+  /Users/luiswoo/Desktop/raytracer/include/raytracing.hpp \
+  /Users/luiswoo/Desktop/raytracer/include/sphere.hpp \
   /Users/luiswoo/Desktop/raytracer/include/vec3.hpp
 
 
 /Users/luiswoo/Desktop/raytracer/include/ray.hpp:
+
+/Users/luiswoo/Desktop/raytracer/include/hittable_list.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h:
 
@@ -1683,6 +1689,8 @@ CMakeFiles/main.dir/src/main.cpp.o: /Users/luiswoo/Desktop/raytracer/src/main.cp
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/allocator_destructor.h:
 
+/Users/luiswoo/Desktop/raytracer/include/hittable.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/nat.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__fwd/ostream.h:
@@ -1702,6 +1710,8 @@ CMakeFiles/main.dir/src/main.cpp.o: /Users/luiswoo/Desktop/raytracer/src/main.cp
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/mismatch.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__concepts/arithmetic.h:
+
+/Users/luiswoo/Desktop/raytracer/include/raytracing.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__concepts/boolean_testable.h:
 
@@ -2246,6 +2256,8 @@ CMakeFiles/main.dir/src/main.cpp.o: /Users/luiswoo/Desktop/raytracer/src/main.cp
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/unique_ptr.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__fwd/istream.h:
+
+/Users/luiswoo/Desktop/raytracer/include/sphere.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_trivially_destructible.h:
 
