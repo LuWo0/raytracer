@@ -2,6 +2,7 @@
 #define CAMERA_HPP
 
 #include "hittable.hpp"
+#include "material.hpp"
 
 class Camera {
 private:
@@ -60,11 +61,20 @@ private:
     return Vec3(random_double() - 0.5, random_double() - 0.5, 0);
   }
 
-  Color ray_color(const Ray &r, const Hittable &world) const {
+  Color ray_color(const Ray &r, int depth, const Hittable &world) const {
+    if (depth <=
+        0) // If we've exeeded the ray bounce limit, no more light is gathered
+      return Color(0, 0, 0);
+
     Hit_Record rec;
 
-    if (world.hit(r, Interval(0, INF), rec)) {
-      return 0.5 * (rec.normal + Color(1, 1, 1));
+    if (world.hit(r, Interval(0.001, INF), rec)) {
+      Ray scattered;
+      Color attenuation;
+      if (rec.mat->scatter(r, rec, attenuation, scattered)) {
+        return attenuation * ray_color(scattered, depth - 1, world);
+      }
+      return Color(0, 0, 0);
     }
     Vec3 unit_direction{unit_vector(r.direction())};
     double a{0.5 * (unit_direction.y() + 1.0)};
@@ -75,6 +85,7 @@ public:
   double aspect_ratio = 1.0;
   int image_width = 100;
   int samples_per_pixel = 10; // Count of random samples for each pixel
+  int max_depth = 10;         // Maximum number of ray bounces into scene
 
   void render(const Hittable &world) {
     initialize();
@@ -88,7 +99,7 @@ public:
         Color pixel_color(0, 0, 0);
         for (int sample{0}; sample < samples_per_pixel; sample++) {
           Ray r{get_ray(i, j)};
-          pixel_color += ray_color(r, world);
+          pixel_color += ray_color(r, max_depth, world);
         }
         write_color(std::cout, pixel_samples_scale * pixel_color);
       }
