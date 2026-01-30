@@ -782,9 +782,11 @@ CMakeFiles/main.dir/src/main.cpp.o: /Users/luiswoo/Desktop/raytracer/src/main.cp
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
+  /Users/luiswoo/Desktop/raytracer/include/camera.hpp \
   /Users/luiswoo/Desktop/raytracer/include/color.hpp \
   /Users/luiswoo/Desktop/raytracer/include/hittable.hpp \
   /Users/luiswoo/Desktop/raytracer/include/hittable_list.hpp \
+  /Users/luiswoo/Desktop/raytracer/include/interval.hpp \
   /Users/luiswoo/Desktop/raytracer/include/ray.hpp \
   /Users/luiswoo/Desktop/raytracer/include/raytracing.hpp \
   /Users/luiswoo/Desktop/raytracer/include/sphere.hpp \
@@ -1387,6 +1389,8 @@ CMakeFiles/main.dir/src/main.cpp.o: /Users/luiswoo/Desktop/raytracer/src/main.cp
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__math/hyperbolic_functions.h:
 
+/Users/luiswoo/Desktop/raytracer/include/camera.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_rsize_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__tuple/ignore.h:
@@ -1464,6 +1468,8 @@ CMakeFiles/main.dir/src/main.cpp.o: /Users/luiswoo/Desktop/raytracer/src/main.cp
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_ctype.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__math/trigonometric_functions.h:
+
+/Users/luiswoo/Desktop/raytracer/include/interval.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_char_like_type.h:
 

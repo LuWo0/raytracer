@@ -5,15 +5,17 @@
 
 class Camera {
 private:
-  int image_height;     // Rendered image height
-  Point3 center;        // Camera center
-  Point3 pixel_100_loc; // Location of pixel 0, 0
-  Vec3 pixel_delta_u;   // Offset to pixel to the right
-  Vec3 pixel_delta_v;   // Offset to pixel below
+  int image_height;           // Rendered image height
+  double pixel_samples_scale; // Color scale factor for a sum of pixel samples
+  Point3 center;              // Camera center
+  Point3 pixel_100_loc;       // Location of pixel 0, 0
+  Vec3 pixel_delta_u;         // Offset to pixel to the right
+  Vec3 pixel_delta_v;         // Offset to pixel below
 
   void initialize() {
     image_height = int(image_width / aspect_ratio);
     image_height = (image_height < 1) ? 1 : image_height;
+    pixel_samples_scale = 1.0 / samples_per_pixel;
 
     center = Point3(0, 0, 0);
 
@@ -26,7 +28,7 @@ private:
     // Calculate the vectors across the horizontal and down the vertical
     // viewport edges
     auto viewport_u = Vec3(viewport_width, 0, 0);
-    auto viewport_v = Vec3(0, viewport_height, 0);
+    auto viewport_v = Vec3(0, -viewport_height, 0);
 
     // Calculate the horizontal and vertical delta vecotrs from pixel to pixel
     pixel_delta_u = viewport_u / image_width;
@@ -36,6 +38,26 @@ private:
     auto viewport_upper_left =
         center - Vec3(0, 0, focal_length) - viewport_u / 2 - viewport_v / 2;
     pixel_100_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
+  }
+
+  Ray get_ray(int i, int j) {
+    // Construct a camera ray originating from the origin and directed at
+    // randomly sampled points around the pixel location i, j
+
+    auto offset{sample_square()};
+    auto pixel_sample{pixel_100_loc + ((i + offset.x()) * pixel_delta_u) +
+                      ((j + offset.y()) * pixel_delta_v)};
+
+    auto ray_origin = center;
+    auto ray_direction = pixel_sample - ray_origin;
+
+    return Ray(ray_origin, ray_direction);
+  }
+
+  Vec3 sample_square() const {
+    // Returns the vector to a random point in the [-.5, -.5] - [+.5, +.5] unit
+    // space
+    return Vec3(random_double() - 0.5, random_double() - 0.5, 0);
   }
 
   Color ray_color(const Ray &r, const Hittable &world) const {
@@ -52,6 +74,7 @@ private:
 public:
   double aspect_ratio = 1.0;
   int image_width = 100;
+  int samples_per_pixel = 10; // Count of random samples for each pixel
 
   void render(const Hittable &world) {
     initialize();
@@ -62,13 +85,12 @@ public:
       std::clog << "\rScanlines remaining: " << (image_height - j) << " "
                 << std::flush;
       for (int i{0}; i < image_width; i++) {
-        auto pixel_center{pixel100_loc + (i * pixel_delta_u) +
-                          (j * pixel_delta_v)};
-        auto ray_direction{pixel_center - center};
-        Ray r(center, ray_direction);
-
-        Color pixel_color{ray_color(r, world)};
-        write_color(std::cout, pixel_color);
+        Color pixel_color(0, 0, 0);
+        for (int sample{0}; sample < samples_per_pixel; sample++) {
+          Ray r{get_ray(i, j)};
+          pixel_color += ray_color(r, world);
+        }
+        write_color(std::cout, pixel_samples_scale * pixel_color);
       }
     }
     std::clog << "\rDone.               \n";
