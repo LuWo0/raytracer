@@ -1,3 +1,0 @@
-/Users/luiswoo/Desktop/raytracer/build/CMakeFiles/main.dir
-/Users/luiswoo/Desktop/raytracer/build/CMakeFiles/edit_cache.dir
-/Users/luiswoo/Desktop/raytracer/build/CMakeFiles/rebuild_cache.dir
