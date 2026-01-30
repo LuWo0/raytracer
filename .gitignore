@@ -13,6 +13,8 @@ CTestTestfile.cmake
 _deps
 CMakeUserPresets.json
 
+./build/CMakeFiles
+./build/.cmake/api/
 
 # C++
 # Prerequisites
