@@ -6,9 +6,18 @@
 #include "../include/hittable_list.hpp"
 #include "../include/material.hpp"
 #include "../include/sphere.hpp"
+#include <cstring>
 #include <memory>
 
-int main() {
+int main(int argc, char* argv[]) {
+  bool benchmark_mode = false;
+  
+  // Check for --benchmark flag
+  for (int i = 1; i < argc; i++) {
+    if (std::strcmp(argv[i], "--benchmark") == 0 || std::strcmp(argv[i], "-b") == 0) {
+      benchmark_mode = true;
+    }
+  }
 
   Hittable_List world;
 
@@ -67,7 +76,7 @@ int main() {
   camera.defocus_angle = 0.6;
   camera.focus_dist = 10.0;
 
-  camera.render(world);
+  camera.render(world, benchmark_mode);
 
   return 0;
 }
