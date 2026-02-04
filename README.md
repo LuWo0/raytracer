@@ -17,7 +17,8 @@ OpenMP parallelization provides a significant speedup for rendering. Below is a 
 | **Multi-threaded** (default) | 500 | 6m 7s 
 | **Single-threaded** (`OMP_NUM_THREADS=1`) | 500 | >20m (I got impatient and ended build lol)
 | **Multi-threaded** | 10 | 5s 
-| **Single-threaded** | 10 | 19s
+| **Single-threaded** | 10 | 19s |
+
 To force single-threaded execution for testing:
 ```bash
 OMP_NUM_THREADS=1 ./main > output.ppm
