@@ -1,4 +1,4 @@
-# raytracer
+# Ray Tracer
 
 Basic ray tracer implementation in C++ following [_Ray Tracing In One Weekend_](https://raytracing.github.io/books/RayTracingInOneWeekend.html)
 
@@ -12,11 +12,12 @@ Basic ray tracer implementation in C++ following [_Ray Tracing In One Weekend_](
 
 OpenMP parallelization provides a significant speedup for rendering. Below is a comparison of the final high-quality scene render times:
 
-| Mode | Wall Clock Time | CPU Usage |
-|------|-----------------|-----------|
-| **Multi-threaded** (default) | 6m 7s 
-| **Single-threaded** (`OMP_NUM_THREADS=1`) | >20m (I got impatient and ended build lol)
-
+| Mode | Sameplse Per Pixel | Wall Clock Time |
+|------|--------------------|-----------------|
+| **Multi-threaded** (default) | 500 | 6m 7s 
+| **Single-threaded** (`OMP_NUM_THREADS=1`) | 500 | >20m (I got impatient and ended build lol)
+| **Multi-threaded** | 10 | 5s 
+| **Single-threaded** | 10 | 19s
 To force single-threaded execution for testing:
 ```bash
 OMP_NUM_THREADS=1 ./main > output.ppm
