@@ -16,6 +16,9 @@ CMakeUserPresets.json
 
 build/
 
+.DS_Store
+**/.DS_Store
+
 # C++
 # Prerequisites
 *.d
