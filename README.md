@@ -6,24 +6,33 @@ Basic ray tracer implementation in C++ following [_Ray Tracing In One Weekend_](
 
 - Full implementation of the ray tracing tutorial
 - **Parallel rendering with OpenMP** for significantly faster image generation
-- Graceful fallback to single-threaded mode if OpenMP is unavailable
+- Fallback to single-threaded mode if OpenMP is unavailable
 
 ## Rendered Outputs
 
-The following images were rendered using this raytracer (located in `build/`):
+### Final Scene (High Quality)
+![Final Scene HQ](images/final-scene-hq.png)
 
-| Image | Description |
-|-------|-------------|
-| `image.ppm` | Basic render output |
-| `antialias.ppm` | Antialiasing demonstration |
-| `fov.ppm` | Field of view showcase |
-| `fuzz.ppm` | Fuzzy/rough metal materials |
-| `hollow.ppm` | Hollow glass sphere effect |
-| `dof-spheres.ppm` | Depth of field with spheres |
-| `final-scene.ppm` | Final scene composition |
-| `final-scene-hq.ppm` | High quality final scene |
+### Final Scene
+![Final Scene](images/final-scene.png)
 
-> **Note:** PPM files can be viewed with image viewers like GIMP, ImageMagick, or converted to PNG/JPG using tools like `convert image.ppm image.png`
+### Depth of Field
+![Depth of Field](images/dof-spheres.png)
+
+### Hollow Glass Sphere
+![Hollow](images/hollow.png)
+
+### Fuzzy Metal Materials
+![Fuzz](images/fuzz.png)
+
+### Field of View
+![FOV](images/fov.png)
+
+### Antialiasing
+![Antialiasing](images/antialias.png)
+
+### Basic Render
+![Basic](images/image.png)
 
 ## Building
 
