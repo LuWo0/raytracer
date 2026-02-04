@@ -1,6 +1,8 @@
 #ifndef VEC3_HPP
 #define VEC3_HPP
 
+#include <random>
+
 class Vec3 {
 public:
   double e[3];
@@ -38,13 +40,35 @@ public:
 
   double length() const { return std::sqrt(length_squared()); }
 
+  static Vec3 random(std::mt19937 &rng) {
+    static thread_local std::uniform_real_distribution<double> distribution(
+        0.0, 1.0);
+    return Vec3(distribution(rng), distribution(rng), distribution(rng));
+  }
+
   static Vec3 random() {
-    return Vec3(random_double(), random_double(), random_double());
+    static std::uniform_real_distribution<double> distribution(0.0, 1.0);
+    static std::mt19937 generator;
+    return Vec3(distribution(generator), distribution(generator),
+                distribution(generator));
   }
 
   static Vec3 random(double min, double max) {
-    return Vec3(random_double(min, max), random_double(min, max),
-                random_double(min, max));
+    static std::uniform_real_distribution<double> distribution(0.0, 1.0);
+    static std::mt19937 generator;
+    double range = max - min;
+    return Vec3(min + range * distribution(generator),
+                min + range * distribution(generator),
+                min + range * distribution(generator));
+  }
+
+  static Vec3 random(double min, double max, std::mt19937 &rng) {
+    static thread_local std::uniform_real_distribution<double> distribution(
+        0.0, 1.0);
+    double range = max - min;
+    return Vec3(min + range * distribution(rng),
+                min + range * distribution(rng),
+                min + range * distribution(rng));
   }
 
   bool near_zero() const {
@@ -97,17 +121,20 @@ inline Vec3 cross(const Vec3 &u, const Vec3 &v) {
 
 inline Vec3 unit_vector(const Vec3 &v) { return v / v.length(); }
 
-inline Vec3 random_in_unit_disk() {
+inline Vec3 random_in_unit_disk(std::mt19937 &rng) {
+  static thread_local std::uniform_real_distribution<double> distribution(-1.0,
+                                                                          1.0);
   while (true) {
-    auto p = Vec3(random_double(-1, 1), random_double(-1, 1), 0);
+    auto p = Vec3(distribution(rng), distribution(rng), 0);
     if (p.length_squared() < 1)
       return p;
   }
 }
-
-inline Vec3 random_unit_vector() {
+inline Vec3 random_unit_vector(std::mt19937 &rng) {
+  static thread_local std::uniform_real_distribution<double> distribution(-1.0,
+                                                                          1.0);
   while (true) {
-    auto p{Vec3::random(-1, 1)};
+    auto p = Vec3(distribution(rng), distribution(rng), distribution(rng));
     auto lensq = p.length_squared();
     if (1e-160 < lensq && lensq <= 1) {
       return p / sqrt(lensq);
@@ -115,8 +142,8 @@ inline Vec3 random_unit_vector() {
   }
 }
 
-inline Vec3 random_on_hemisphere(const Vec3 &normal) {
-  Vec3 on_unit_sphere{random_unit_vector()};
+inline Vec3 random_on_hemisphere(const Vec3 &normal, std::mt19937 &rng) {
+  Vec3 on_unit_sphere{random_unit_vector(rng)};
   if (dot(on_unit_sphere, normal) >
       0.0) { // In the same hemisphere as the normal
     return on_unit_sphere;

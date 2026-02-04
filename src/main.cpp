@@ -13,7 +13,7 @@ int main() {
   Hittable_List world;
 
   auto ground_material = make_shared<Lambertian>(Color(0.5, 0.5, 0.5));
-  world.add(make_shared<Sphere>(Point3(0, 1000, 0), 1000, ground_material));
+  world.add(make_shared<Sphere>(Point3(0, -1000, 0), 1000, ground_material));
 
   for (int a{-11}; a < 11; a++) {
     for (int b{-11}; b < 11; b++) {
@@ -56,7 +56,7 @@ int main() {
 
   camera.aspect_ratio = 16.0 / 9.0;
   camera.image_width = 1200;
-  camera.samples_per_pixel = 10;
+  camera.samples_per_pixel = 500;
   camera.max_depth = 50;
 
   camera.vfov = 20;

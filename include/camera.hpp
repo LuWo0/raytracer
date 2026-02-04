@@ -3,6 +3,8 @@
 
 #include "hittable.hpp"
 #include "material.hpp"
+#include <omp.h>
+#include <random>
 
 class Camera {
 private:
@@ -57,27 +59,30 @@ private:
     defocus_disk_v = v * defocus_radius;
   }
 
-  Ray get_ray(int i, int j) {
+  Ray get_ray(int i, int j, std::mt19937 &rng) {
     // Construct a camera ray originating from the origin and directed at
     // randomly sampled points around the pixel location i, j
 
-    auto offset{sample_square()};
+    auto offset{sample_square(rng)};
     auto pixel_sample{pixel_100_loc + ((i + offset.x()) * pixel_delta_u) +
                       ((j + offset.y()) * pixel_delta_v)};
 
-    auto ray_origin = (defocus_angle <= 0) ? center : defocus_disk_sample();
+    auto ray_origin = (defocus_angle <= 0) ? center : defocus_disk_sample(rng);
     auto ray_direction = pixel_sample - ray_origin;
 
     return Ray(ray_origin, ray_direction);
   }
 
-  Vec3 sample_square() const {
+  Vec3 sample_square(std::mt19937 &rng) const {
     // Returns the vector to a random point in the [-.5, -.5] - [+.5, +.5] unit
     // space
-    return Vec3(random_double() - 0.5, random_double() - 0.5, 0);
+    static thread_local std::uniform_real_distribution<double> distribution(
+        0.0, 1.0);
+    return Vec3(distribution(rng) - 0.5, distribution(rng) - 0.5, 0);
   }
 
-  Color ray_color(const Ray &r, int depth, const Hittable &world) const {
+  Color ray_color(const Ray &r, int depth, const Hittable &world,
+                  std::mt19937 &rng) const {
     if (depth <=
         0) // If we've exeeded the ray bounce limit, no more light is gathered
       return Color(0, 0, 0);
@@ -87,8 +92,8 @@ private:
     if (world.hit(r, Interval(0.001, INF), rec)) {
       Ray scattered;
       Color attenuation;
-      if (rec.mat->scatter(r, rec, attenuation, scattered)) {
-        return attenuation * ray_color(scattered, depth - 1, world);
+      if (rec.mat->scatter(r, rec, attenuation, scattered, rng)) {
+        return attenuation * ray_color(scattered, depth - 1, world, rng);
       }
       return Color(0, 0, 0);
     }
@@ -97,9 +102,9 @@ private:
     return (1.0 - a) * Color(1.0, 1.0, 1.0) + a * Color(0.5, 0.7, 1.0);
   }
 
-  Point3 defocus_disk_sample() const {
+  Point3 defocus_disk_sample(std::mt19937 &rng) const {
     // Returns random point in rhe camera defocus disk
-    auto p{random_in_unit_disk()};
+    auto p{random_in_unit_disk(rng)};
     return center + (p[0] * defocus_disk_u) + (p[1] * defocus_disk_v);
   }
 
@@ -120,19 +125,29 @@ public:
 
   void render(const Hittable &world) {
     initialize();
-
-    std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
-
-    for (int j{0}; j < image_height; j++) {
-      std::clog << "\rScanlines remaining: " << (image_height - j) << " "
-                << std::flush;
-      for (int i{0}; i < image_width; i++) {
+    std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+    std::vector<Color> image(image_width * image_height);
+#pragma omp parallel for schedule(dynamic, 1) collapse(2)
+    for (int j = 0; j < image_height; j++) {
+      for (int i = 0; i < image_width; i++) {
+        thread_local std::mt19937 rng(std::random_device{}() +
+                                      omp_get_thread_num());
         Color pixel_color(0, 0, 0);
-        for (int sample{0}; sample < samples_per_pixel; sample++) {
-          Ray r{get_ray(i, j)};
-          pixel_color += ray_color(r, max_depth, world);
+        for (int sample = 0; sample < samples_per_pixel; sample++) {
+          Ray r{get_ray(i, j, rng)};
+          pixel_color += ray_color(r, max_depth, world, rng);
         }
-        write_color(std::cout, pixel_samples_scale * pixel_color);
+        image[j * image_width + i] = pixel_samples_scale * pixel_color;
+      }
+    }
+
+    for (int j = 0; j < image_height; j++) {
+      if (j % 10 == 0) {
+        std::clog << "\rScanlines remaining: " << (image_height - j) << " "
+                  << std::flush;
+      }
+      for (int i = 0; i < image_width; i++) {
+        write_color(std::cout, image[j * image_width + i]);
       }
     }
     std::clog << "\rDone.               \n";
