@@ -42,10 +42,10 @@ OMP_NUM_THREADS=1 ./main > output.ppm
 ### Depth of Field
 ![Depth of Field](images/dof-spheres.png)
 
-### Final Scene
+### Final Scene (samples_per_pixel = 10)
 ![Final Scene](images/final-scene.png)
 
-### Final Scene (High Quality)
+### Final Scene (samples_per_pixel = 500)
 ![Final Scene HQ](images/final-scene-hq.png)
 
 ## Building
